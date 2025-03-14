@@ -11,24 +11,65 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: The maximum size of the Customer Service Queue is set to 0 when it is created.
+        // Expected Result: The size is 10 by default
         Console.WriteLine("Test 1");
+        // Defect(s) Found: Nope
 
-        // Defect(s) Found: 
-
+        // var service = new CustomerService(0);
+        // Console.WriteLine(service.ToString());
+        
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: The maximum size of the Customer Service Queue is set to 5 when it is created.  Add two customers in the order of customer A and customer B
+        // Expected Result: [customer A, customer B], maximum size = 5
         Console.WriteLine("Test 2");
+        // Defect(s) Found: nope
 
-        // Defect(s) Found: 
+        // var service = new CustomerService(5);
+        // service.AddNewCustomer();
+        // service.AddNewCustomer();
+        // Console.WriteLine(service.ToString());
 
         Console.WriteLine("=================");
 
-        // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: The maximum size of the queue is set to 2 when it is created.  Add three customers.
+        // Expected Result: An error message is displayed to show the queue is full after two customer are added to the queue.
+        Console.WriteLine("Test 3");
+        // Defect(s) Found: No error showing when reaching the maximum size of the queue
+        
+        // var service = new CustomerService(2);
+        // service.AddNewCustomer();
+        // service.AddNewCustomer();
+        // service.AddNewCustomer();
+
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: The maximum size is 3, add 3 customers in the order of A, B, C.  Serve the three customers.
+        // Expected Result: customers being served in the order of A, B, C
+        Console.WriteLine("Test 4");
+        // Defect(s) Found: Error on ServeCustomer--Index was out of range. Must be non-negative and less than the size of the collection.
+        
+        // var service = new CustomerService(3);
+        // service.AddNewCustomer();
+        // service.AddNewCustomer();
+        // service.AddNewCustomer();
+        // service.ServeCustomer();
+        // service.ServeCustomer();
+        // service.ServeCustomer();
+        
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: The maximum size is 0, add 1 customer.
+        // Expected Result: An error message is displayed to show no customer in the queue
+        Console.WriteLine("Test 5");
+        // Defect(s) Found: Erorr on ServeCustomer--System.ArgumentOutOfRangeException
+        var service = new CustomerService(0);
+        service.ServeCustomer();
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +108,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +129,14 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        if (_queue.Count <= 0)
+        {
+            Console.WriteLine("No customer in the queue");
+            return;
+        }
         var customer = _queue[0];
         Console.WriteLine(customer);
+        _queue.RemoveAt(0);
     }
 
     /// <summary>
